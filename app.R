@@ -40,6 +40,7 @@ ui <- bulmaPage(
           bulmaTitle("echarts4r"),
           bulmaSubtitle("using shiny*"),
           a(href = "http://echarts4r.john-coene.com/", target = "blank", "Website"),
+          br(),
           a(href = "https://github.com/JohnCoene/echarts4rShiny", target = "blank", "Source code")
         )
       )
