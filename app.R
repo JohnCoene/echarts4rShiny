@@ -10,7 +10,8 @@ ui <- bulmaPage(
        bulmaNavbarItem(
         "echarts4r",
         href = "home"
-       )
+       ),
+       bulmaNavbarBurger()
     ),
     bulmaNavbarMenu(
       bulmaNavbarItem(
