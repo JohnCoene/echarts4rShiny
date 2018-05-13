@@ -33,6 +33,7 @@ ui <- bulmaPage(
   bulmaNav(
     "home",
     bulmaHero(
+      color = "info",
       fullheight = TRUE,
       bulmaHeroBody(
         bulmaContainer(
