@@ -102,7 +102,11 @@ ui <- bulmaPage(
       br(),
       bulmaTitle("Add data"),
       bulmaActionButton("updateButton", label = "update"),
-      echarts4rOutput("updateSection")
+      echarts4rOutput("updateSection"),
+      p(
+        "Use", code("e_append1p_p"), "or", code("e_append2p_p"), "to add data to a proxy",
+        "(", code("echarts4rProxy"), ")."
+      )
     )
   ),
   bulmaNav(
