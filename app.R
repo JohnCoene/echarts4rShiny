@@ -8,7 +8,7 @@ ui <- bulmaPage(
   bulmaNavbar(
     bulmaNavbarBrand(
        bulmaNavbarItem(
-        "echarts4r",
+        "echarts4r*",
         href = "home"
        ),
        bulmaNavbarBurger()
@@ -25,6 +25,9 @@ ui <- bulmaPage(
       ),
       bulmaNavbarItem(
         "data"
+      ),
+      bulmaNavbarItem(
+        "graph"
       ),
       bulmaNavbarItem(
         "events"
@@ -111,13 +114,41 @@ ui <- bulmaPage(
     )
   ),
   bulmaNav(
+    "graph",
+    bulmaContainer(
+      br(),
+      bulmaTitle("Nodes adjacency"),
+      bulmaColumns(
+        bulmaColumn(
+          bulmaActionButton("focusButton", label = "focus")
+        ),
+        bulmaColumn(
+          bulmaActionButton("unfocusButton", label = "unfocus")
+        ),
+        bulmaColumn(
+          bulmaSelectInput(
+            "node", 
+            "node", 
+            choices = 1:100
+          )
+        )
+      ),
+      echarts4rOutput("graphSection")
+    )
+  ),
+  bulmaNav(
     "events",
     bulmaContainer(
       br(),
       bulmaTitle("Events"),
       p(
         code("echarts4r"),
-        "lets you capture elements selected, or cliked."
+        "lets you capture elements selected, or cliked (many more detailed on",
+        tags$a(
+          "the package website",
+          href = "https://echarts4r.john-coene.com/articles/shiny.html"
+        )
+        ,")."
       ),
       bulmaColumns(
         bulmaColumn(
@@ -131,6 +162,20 @@ ui <- bulmaPage(
           bulmaSubtitle("Mouseover"),
           verbatimTextOutput("mouseover")
         )
+      ),
+      bulmaColumns(
+        bulmaColumn(
+          bulmaSubtitle("Clicked data point"),
+          verbatimTextOutput("clickedData")
+        ),
+        bulmaColumn(
+          bulmaSubtitle("Clicked serie"),
+          verbatimTextOutput("clickedSerie")
+        ),
+        bulmaColumn(
+          bulmaSubtitle("Clicked Row"),
+          verbatimTextOutput("clickedRow")
+        )
       )
     )
   )
@@ -140,8 +185,7 @@ server <- function(input, output) {
 
   init <- data.frame(x = rnorm(10, 5, 2), y = rnorm(10, 50, 10), z = rnorm(10, 2, 5))
 
-  update_data <- reactive({
-     set.seed(sample(1:1000, 1))
+  update_data <- eventReactive(input$updateButton, {
      data.frame(x = rnorm(10, 5, 2), y = rnorm(10, 50, 10), z = rnorm(10, 2, 5))
   })
 
@@ -213,6 +257,51 @@ server <- function(input, output) {
 
   output$mouseover <- renderPrint({
     input$proxies_mouseover_data
+  })
+  
+  output$clickedData <- renderPrint({
+    input$proxies_clicked_data
+  })
+  
+  output$clickedSerie <- renderPrint({
+    input$proxies_clicked_serie
+  })
+  
+  output$clickedRow <- renderPrint({
+    input$proxies_clicked_row
+  })
+  
+  value <- rnorm(10, 10, 2)
+  
+  nodes <- data.frame(
+    name = paste0(LETTERS, 1:100),
+    value = value,
+    size = value,
+    grp = rep(c("grp A", "grp B"), 5),
+    stringsAsFactors = FALSE
+  )
+  
+  edges <- data.frame(
+    source = sample(nodes$name, 150, replace = TRUE),
+    target = sample(nodes$name, 150, replace = TRUE),
+    stringsAsFactors = FALSE
+  )
+  
+  output$graphSection <- renderEcharts4r({
+    e_charts() %>% 
+      e_graph() %>% 
+      e_graph_nodes(nodes, name, value, size, grp) %>% 
+      e_graph_edges(edges, source, target)
+  })
+  
+  observeEvent(input$focusButton, {
+    echarts4rProxy("graphSection") %>% 
+      e_focus_adjacency(seriesIndex = 0, index = input$node)
+  })
+  
+  observeEvent(input$unfocusButton, {
+    echarts4rProxy("graphSection") %>% 
+      e_unfocus_adjacency(seriesIndex = 0)
   })
 
 }
