@@ -296,12 +296,12 @@ server <- function(input, output) {
   
   observeEvent(input$focusButton, {
     echarts4rProxy("graphSection") %>% 
-      e_focus_adjacency(seriesIndex = 0, index = input$node)
+      e_focus_adjacency_p(seriesIndex = 0, index = input$node)
   })
   
   observeEvent(input$unfocusButton, {
     echarts4rProxy("graphSection") %>% 
-      e_unfocus_adjacency(seriesIndex = 0)
+      e_unfocus_adjacency_p(seriesIndex = 0)
   })
 
 }
