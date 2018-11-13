@@ -5,6 +5,9 @@ library(echarts4r)
 
 ui <- bulmaPage(
   theme = "materia",
+  tags$head(
+    tags$style(".hero{background-color:#293c55!important;}")
+  ),
   bulmaNavbar(
     bulmaNavbarBrand(
        bulmaNavbarItem(
@@ -43,9 +46,12 @@ ui <- bulmaPage(
         bulmaContainer(
           bulmaTitle("echarts4r"),
           bulmaSubtitle("using shiny*"),
-          a(href = "http://echarts4r.john-coene.com/", target = "blank", "Website"),
+          img(src = "https://echarts4r.john-coene.com/reference/figures/logo.png"),
           br(),
-          a(href = "https://github.com/JohnCoene/echarts4rShiny", target = "blank", "Source code")
+          br(),
+          a(href = "http://echarts4r.john-coene.com/", target = "blank", icon("desktop fa-lg"), " Website"),
+          br(),
+          a(href = "https://github.com/JohnCoene/echarts4rShiny", target = "blank", tags$i(class = "fab fa-github fa-lg"), " Source code")
         )
       )
     )
