@@ -33,6 +33,9 @@ ui <- bulmaPage(
         "graph"
       ),
       bulmaNavbarItem(
+        "connect"
+      ),
+      bulmaNavbarItem(
         "events"
       )
     )
@@ -140,6 +143,25 @@ ui <- bulmaPage(
         )
       ),
       echarts4rOutput("graphSection")
+    )
+  ),
+  bulmaNav(
+    "connect",
+    bulmaContainer(
+      br(),
+      bulmaTitle("Connect charts"),
+      bulmaColumns(
+        bulmaColumn(
+          echarts4rOutput("connect1")
+        ),
+        bulmaColumn(
+          echarts4rOutput("connect2")
+        )
+      ),
+      p(
+        "Because the series bare the same name they are connected, one will trigger the other.",
+        "The", code("e_datazoom"), "is also connected."
+      )
     )
   ),
   bulmaNav(
@@ -310,6 +332,29 @@ server <- function(input, output) {
       e_unfocus_adjacency_p(seriesIndex = 0)
   })
 
+  output$connect1 <- renderEcharts4r({
+    cars %>% 
+      e_charts(
+        speed,
+        height = 200
+      ) %>% 
+      e_scatter(dist, name = "legend") %>% 
+      e_datazoom(show = FALSE, y_index = 0) %>% 
+      e_group("grp")
+  })
+  
+  output$connect2 <- renderEcharts4r({
+    cars %>% 
+      e_charts(
+        dist,
+        height = 200
+      ) %>% 
+      e_scatter(speed, name = "legend") %>% 
+      e_datazoom(y_index = 0) %>% 
+      e_group("grp") %>%  # assign group
+      e_connect_group("grp")
+  })
+  
 }
 
 shinyApp(ui, server)
