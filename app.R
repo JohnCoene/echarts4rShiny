@@ -259,7 +259,7 @@ server <- function(input, output) {
   output$updateSection <- renderEcharts4r({
     init %>%
       e_charts(x) %>%
-      e_scatter(y, z)
+      e_scatter(y, z, scale = NULL)
   })
 
   observeEvent(input$updateButton, {
