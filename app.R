@@ -5,6 +5,9 @@ library(echarts4r)
 
 ui <- bulmaPage(
   theme = "materia",
+  tags$head(
+    tags$style(".hero{background-color:#293c55!important;}")
+  ),
   bulmaNavbar(
     bulmaNavbarBrand(
        bulmaNavbarItem(
@@ -30,6 +33,9 @@ ui <- bulmaPage(
         "graph"
       ),
       bulmaNavbarItem(
+        "connect"
+      ),
+      bulmaNavbarItem(
         "events"
       )
     )
@@ -43,9 +49,12 @@ ui <- bulmaPage(
         bulmaContainer(
           bulmaTitle("echarts4r"),
           bulmaSubtitle("using shiny*"),
-          a(href = "http://echarts4r.john-coene.com/", target = "blank", "Website"),
+          img(src = "https://echarts4r.john-coene.com/reference/figures/logo.png"),
           br(),
-          a(href = "https://github.com/JohnCoene/echarts4rShiny", target = "blank", "Source code")
+          br(),
+          a(href = "http://echarts4r.john-coene.com/", target = "blank", icon("desktop fa-lg"), " Website"),
+          br(),
+          a(href = "https://github.com/JohnCoene/echarts4rShiny", target = "blank", tags$i(class = "fab fa-github fa-lg"), " Source code")
         )
       )
     )
@@ -141,6 +150,25 @@ ui <- bulmaPage(
           )
         ),
         echarts4rOutput("graphSection")
+      )
+    )
+  ),
+  bulmaNav(
+    "connect",
+    bulmaContainer(
+      br(),
+      bulmaTitle("Connect charts"),
+      bulmaColumns(
+        bulmaColumn(
+          echarts4rOutput("connect1")
+        ),
+        bulmaColumn(
+          echarts4rOutput("connect2")
+        )
+      ),
+      p(
+        "Because the series bare the same name they are connected, one will trigger the other.",
+        "The", code("e_datazoom"), "is also connected."
       )
     )
   ),
@@ -241,7 +269,7 @@ server <- function(input, output) {
   output$updateSection <- renderEcharts4r({
     init %>%
       e_charts(x) %>%
-      e_scatter(y, z)
+      e_scatter(y, z, scale = NULL)
   })
 
   observeEvent(input$updateButton, {
@@ -306,14 +334,37 @@ server <- function(input, output) {
   
   observeEvent(input$focusButton, {
     echarts4rProxy("graphSection") %>% 
-      e_focus_adjacency(seriesIndex = 0, index = input$node)
+      e_focus_adjacency_p(seriesIndex = 0, index = input$node)
   })
   
   observeEvent(input$unfocusButton, {
     echarts4rProxy("graphSection") %>% 
-      e_unfocus_adjacency(seriesIndex = 0)
+      e_unfocus_adjacency_p(seriesIndex = 0)
   })
 
+  output$connect1 <- renderEcharts4r({
+    cars %>% 
+      e_charts(
+        speed,
+        height = 200
+      ) %>% 
+      e_scatter(dist, name = "legend") %>% 
+      e_datazoom(show = FALSE, y_index = 0) %>% 
+      e_group("grp")
+  })
+  
+  output$connect2 <- renderEcharts4r({
+    cars %>% 
+      e_charts(
+        dist,
+        height = 200
+      ) %>% 
+      e_scatter(speed, name = "legend") %>% 
+      e_datazoom(y_index = 0) %>% 
+      e_group("grp") %>%  # assign group
+      e_connect_group("grp")
+  })
+  
 }
 
 shinyApp(ui, server)
