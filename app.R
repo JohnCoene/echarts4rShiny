@@ -9,34 +9,36 @@ ui <- bulmaPage(
     tags$style(".hero{background-color:#293c55!important;}")
   ),
   bulmaNavbar(
-    bulmaNavbarBrand(
-       bulmaNavbarItem(
-        "echarts4r*",
-        href = "home"
-       ),
-       bulmaNavbarBurger()
-    ),
-    bulmaNavbarMenu(
-      bulmaNavbarItem(
-        "home"
+    bulmaContainer(
+      bulmaNavbarBrand(
+        bulmaNavbarItem(
+          "echarts4r*",
+          href = "home"
+        ),
+        bulmaNavbarBurger()
       ),
-      bulmaNavbarItem(
-        "redraw"
-      ),
-      bulmaNavbarItem(
-        "loading"
-      ),
-      bulmaNavbarItem(
-        "data"
-      ),
-      bulmaNavbarItem(
-        "graph"
-      ),
-      bulmaNavbarItem(
-        "connect"
-      ),
-      bulmaNavbarItem(
-        "events"
+      bulmaNavbarMenu(
+        bulmaNavbarItem(
+          "home"
+        ),
+        bulmaNavbarItem(
+          "redraw"
+        ),
+        bulmaNavbarItem(
+          "loading"
+        ),
+        bulmaNavbarItem(
+          "data"
+        ),
+        bulmaNavbarItem(
+          "graph"
+        ),
+        bulmaNavbarItem(
+          "connect"
+        ),
+        bulmaNavbarItem(
+          "events"
+        )
       )
     )
   ),
