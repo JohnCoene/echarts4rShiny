@@ -155,20 +155,22 @@ ui <- bulmaPage(
   ),
   bulmaNav(
     "connect",
-    bulmaContainer(
-      br(),
-      bulmaTitle("Connect charts"),
-      bulmaColumns(
-        bulmaColumn(
-          echarts4rOutput("connect1")
+    bulmaSection(
+      bulmaContainer(
+        br(),
+        bulmaTitle("Connect charts"),
+        bulmaColumns(
+          bulmaColumn(
+            echarts4rOutput("connect1")
+          ),
+          bulmaColumn(
+            echarts4rOutput("connect2")
+          )
         ),
-        bulmaColumn(
-          echarts4rOutput("connect2")
+        p(
+          "Because the series bare the same name they are connected, one will trigger the other.",
+          "The", code("e_datazoom"), "is also connected."
         )
-      ),
-      p(
-        "Because the series bare the same name they are connected, one will trigger the other.",
-        "The", code("e_datazoom"), "is also connected."
       )
     )
   ),
