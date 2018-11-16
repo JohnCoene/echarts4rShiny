@@ -52,129 +52,139 @@ ui <- bulmaPage(
   ),
   bulmaNav(
     "redraw",
-    bulmaContainer(
-      br(),
-      bulmaTitle("Redraw"),
-      p(
-        code("echarts4r"), "lets you redraw you chart in a neat manner (without redrawing the whole base chart), which makes for neat animations"
-      ),
-      br(),
-      p("Hit \"redraw\" to see it in action"),
-      br(),
-      bulmaActionButton("redrawButton", label = "redraw"),
-      br(), 
-      bulmaColumns(
-        bulmaColumn(
-          echarts4rOutput("redrawSectionYes")
+    bulmaSection(
+      bulmaContainer(
+        br(),
+        bulmaTitle("Redraw"),
+        p(
+          code("echarts4r"), "lets you redraw you chart in a neat manner (without redrawing the whole base chart), which makes for neat animations"
         ),
-        bulmaColumn(
-          echarts4rOutput("redrawSectionNo")
+        br(),
+        p("Hit \"redraw\" to see it in action"),
+        br(),
+        bulmaActionButton("redrawButton", label = "redraw"),
+        br(), 
+        bulmaColumns(
+          bulmaColumn(
+            echarts4rOutput("redrawSectionYes")
+          ),
+          bulmaColumn(
+            echarts4rOutput("redrawSectionNo")
+          )
+        ),
+        p(
+          "Use",
+          code("echarts4r"),
+          "like you normally would but pass",
+          code("dispose = TRUE"),
+          "when you initialise the chart with",
+          code("e_charts"), "or", code("e_chart.")
         )
-      ),
-      p(
-        "Use",
-        code("echarts4r"),
-        "like you normally would but pass",
-        code("dispose = TRUE"),
-        "when you initialise the chart with",
-        code("e_charts"), "or", code("e_chart.")
       )
     )
   ),
   bulmaNav(
     "loading",
-    bulmaContainer(
-      br(),
-      bulmaTitle("Loading"),
-      p("If your plot or data takes a while to generate you can add a loading icon."),
-      br(),
-      bulmaActionButton("generate", label = "generate"),
-      br(),
-      bulmaColumns(
-        bulmaColumn(
-          echarts4rOutput("showloading")
-        ),
-        bulmaColumn(
-          echarts4rOutput("hideloading")
+    bulmaSection(
+      bulmaContainer(
+        br(),
+        bulmaTitle("Loading"),
+        p("If your plot or data takes a while to generate you can add a loading icon."),
+        br(),
+        bulmaActionButton("generate", label = "generate"),
+        br(),
+        bulmaColumns(
+          bulmaColumn(
+            echarts4rOutput("showloading")
+          ),
+          bulmaColumn(
+            echarts4rOutput("hideloading")
+          )
         )
       )
     )
   ),
   bulmaNav(
     "data",
-    bulmaContainer(
-      br(),
-      bulmaTitle("Add data"),
-      bulmaActionButton("updateButton", label = "update"),
-      echarts4rOutput("updateSection"),
-      p(
-        "Use", code("e_append1p_p"), "or", code("e_append2p_p"), "to add data to a proxy",
-        "(", code("echarts4rProxy"), ")."
+    bulmaSection(
+      bulmaContainer(
+        br(),
+        bulmaTitle("Add data"),
+        bulmaActionButton("updateButton", label = "update"),
+        echarts4rOutput("updateSection"),
+        p(
+          "Use", code("e_append1p_p"), "or", code("e_append2p_p"), "to add data to a proxy",
+          "(", code("echarts4rProxy"), ")."
+        )
       )
     )
   ),
   bulmaNav(
     "graph",
-    bulmaContainer(
-      br(),
-      bulmaTitle("Nodes adjacency"),
-      bulmaColumns(
-        bulmaColumn(
-          bulmaActionButton("focusButton", label = "focus")
-        ),
-        bulmaColumn(
-          bulmaActionButton("unfocusButton", label = "unfocus")
-        ),
-        bulmaColumn(
-          bulmaSelectInput(
-            "node", 
-            "node", 
-            choices = 1:100
+    bulmaSection(
+      bulmaContainer(
+        br(),
+        bulmaTitle("Nodes adjacency"),
+        bulmaColumns(
+          bulmaColumn(
+            bulmaActionButton("focusButton", label = "focus")
+          ),
+          bulmaColumn(
+            bulmaActionButton("unfocusButton", label = "unfocus")
+          ),
+          bulmaColumn(
+            bulmaSelectInput(
+              "node", 
+              "node", 
+              choices = 1:100
+            )
           )
-        )
-      ),
-      echarts4rOutput("graphSection")
+        ),
+        echarts4rOutput("graphSection")
+      )
     )
   ),
   bulmaNav(
     "events",
-    bulmaContainer(
-      br(),
-      bulmaTitle("Events"),
-      p(
-        code("echarts4r"),
-        "lets you capture elements selected, or cliked (many more detailed on",
-        tags$a(
-          "the package website",
-          href = "https://echarts4r.john-coene.com/articles/shiny.html"
-        )
-        ,")."
-      ),
-      bulmaColumns(
-        bulmaColumn(
-          echarts4rOutput("proxies")
+    bulmaSection(
+      bulmaContainer(
+        br(),
+        bulmaTitle("Events"),
+        p(
+          code("echarts4r"),
+          "lets you capture elements selected, or cliked (many more detailed on",
+          tags$a(
+            "the package website",
+            href = "https://echarts4r.john-coene.com/articles/shiny.html"
+          ),
+          ")."
         ),
-        bulmaColumn(
-          bulmaSubtitle("Brushed"),
-          verbatimTextOutput("brushed"),
-          bulmaSubtitle("Legend change"),
-          verbatimTextOutput("selected"),
-          bulmaSubtitle("Mouseover"),
-          verbatimTextOutput("mouseover")
-        )
-      ),
-      bulmaColumns(
-        bulmaColumn(
-          bulmaSubtitle("Clicked data point"),
-          verbatimTextOutput("clickedData")
+        bulmaColumns(
+          bulmaColumn(
+            echarts4rOutput("proxies")
+          ),
+          bulmaColumn(
+            bulmaSubtitle("Brushed"),
+            verbatimTextOutput("brushed"),
+            bulmaSubtitle("Legend change"),
+            verbatimTextOutput("selected"),
+            bulmaSubtitle("Mouseover"),
+            verbatimTextOutput("mouseover")
+          )
         ),
-        bulmaColumn(
-          bulmaSubtitle("Clicked serie"),
-          verbatimTextOutput("clickedSerie")
-        ),
-        bulmaColumn(
-          bulmaSubtitle("Clicked Row"),
-          verbatimTextOutput("clickedRow")
+        bulmaColumns(
+          bulmaColumn(
+            bulmaSubtitle("Clicked data point"),
+            verbatimTextOutput("clickedData")
+          ),
+          bulmaColumn(
+            bulmaSubtitle("Clicked serie"),
+            verbatimTextOutput("clickedSerie")
+          ),
+          bulmaColumn(
+            bulmaSubtitle("Clicked Row"),
+            verbatimTextOutput("clickedRow")
+          )
         )
       )
     )
