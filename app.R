@@ -283,9 +283,10 @@ server <- function(input, output) {
 
   output$proxies <- renderEcharts4r({
     init %>%
+      mutate(sz = y) %>% 
       e_charts(x) %>%
       e_scatter(y, z) %>%
-      e_scatter(z, y) %>%
+      e_scatter(z, sz) %>%
       e_brush()
   })
 
