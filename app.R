@@ -9,36 +9,37 @@ ui <- bulmaPage(
     tags$style(".hero{background-color:#293c55!important;}")
   ),
   bulmaNavbar(
-    bulmaContainer(
-      bulmaNavbarBrand(
-        bulmaNavbarItem(
-          "echarts4r*",
-          href = "home"
-        ),
-        bulmaNavbarBurger()
+    bulmaNavbarBrand(
+      bulmaNavbarItem(
+        "echarts4r",
+        href = "home"
       ),
-      bulmaNavbarMenu(
-        bulmaNavbarItem(
-          "home"
-        ),
-        bulmaNavbarItem(
-          "redraw"
-        ),
-        bulmaNavbarItem(
-          "loading"
-        ),
-        bulmaNavbarItem(
-          "data"
-        ),
-        bulmaNavbarItem(
-          "graph"
-        ),
-        bulmaNavbarItem(
-          "connect"
-        ),
-        bulmaNavbarItem(
-          "events"
-        )
+      bulmaNavbarBurger()
+    ),
+    bulmaNavbarMenu(
+      bulmaNavbarItem(
+        "home"
+      ),
+      bulmaNavbarItem(
+        "redraw"
+      ),
+      bulmaNavbarItem(
+        "loading"
+      ),
+      bulmaNavbarItem(
+        "data"
+      ),
+      bulmaNavbarItem(
+        "graph"
+      ),
+      bulmaNavbarItem(
+        "connect"
+      ),
+      bulmaNavbarItem(
+        "events"
+      ),
+      bulmaNavbarItem(
+        "series"
       )
     )
   ),
@@ -49,7 +50,7 @@ ui <- bulmaPage(
       fullheight = TRUE,
       bulmaHeroBody(
         bulmaContainer(
-          bulmaTitle("echarts4r"),
+          bulmaTitle("echarts4r*"),
           bulmaSubtitle("using shiny*"),
           img(src = "https://echarts4r.john-coene.com/reference/figures/logo.png"),
           br(),
@@ -220,6 +221,27 @@ ui <- bulmaPage(
         )
       )
     )
+  ),
+  bulmaNav(
+    "series",
+    bulmaSection(
+      bulmaContainer(
+        br(),
+        bulmaTitle("Series"),
+        p("In the latest version", code("0.3.0.9000"), "you can dynamically add and remove entire series without redrawing the entire chart."),
+        br(),
+        echarts4rOutput("seriesTab"),
+        p("The buttons below will let you add and remove the curve."),
+        bulmaColumns(
+          bulmaColumn(
+            bulmaActionButton("add_serie", label = "Add fit")
+          ),
+          bulmaColumn(
+            bulmaActionButton("remove_serie", label = "Remove fit")
+          )
+        )
+      )
+    )
   )
 )
 
@@ -368,6 +390,24 @@ server <- function(input, output) {
       e_datazoom(y_index = 0) %>% 
       e_group("grp") %>%  # assign group
       e_connect_group("grp")
+  })
+
+  output$seriesTab <- renderEcharts4r({
+    cars %>% 
+      e_charts(speed) %>% 
+      e_scatter(dist, name = "Distance") %>% 
+      e_tooltip()
+  })
+
+  observeEvent(input$add_serie, {
+    echarts4rProxy("seriesTab", data = cars, x = speed) %>% 
+      e_loess(dist ~ speed, name = "loess") %>% 
+      e_execute()
+  })
+
+  observeEvent(input$remove_serie, {
+    echarts4rProxy("seriesTab") %>% 
+      e_remove_serie("loess")
   })
   
 }
